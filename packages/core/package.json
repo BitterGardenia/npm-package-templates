@@ -1,7 +1,7 @@
 {
-  "name": "@npt/core",
+  "name": "@npmpts/core",
   "version": "0.0.0",
-  "description": "@npt/core",
+  "description": "@npmpts/core",
   "main": "index.js",
   "module": "dist/core.es.js",
   "types": "dist/core.d.ts",
@@ -23,7 +23,7 @@
     }
   },
   "buildOptions": {
-    "name": "NptCore",
+    "name": "NpmptsCore",
     "formats": [
       "es",
       "cjs",

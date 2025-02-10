@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.js",
-    "build-dts": "vue-tsc -p tsconfig.build-browser.json && rollup -c rollup.dts.config.js",
+    "build-dts": "tsc -p tsconfig.build-browser.json && rollup -c rollup.dts.config.js",
     "release": "node scripts/release.js",
     "check": "tsc --incremental --noEmit",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",

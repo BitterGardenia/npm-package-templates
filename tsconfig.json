@@ -21,7 +21,7 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "paths": {
-      "@npt/*": ["packages/*/src"]
+      "@npmpts/*": ["packages/*/src"]
     }
   }
 }

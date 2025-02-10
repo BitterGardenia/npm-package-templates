@@ -11,7 +11,7 @@ const dirs = readdirSync(new URL('../packages', import.meta.url))
 const entries = {}
 
 for (const dir of dirs) {
-  const key = `@npt/${dir}`
+  const key = `@npmpts/${dir}`
   if (!(key in entries) && statSync(new URL(`../packages/${dir}`, import.meta.url)).isDirectory()) {
     entries[key] = resolveEntryForPkg(dir)
   }
