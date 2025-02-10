@@ -285,7 +285,7 @@ async function isInSyncWithRemote() {
   try {
     const branch = await getBranch()
     const res = await fetch(
-      `https://api.github.com/repos/BitterBar/amap-devkit/commits/${branch}?per_page=1`
+      `https://api.github.com/repos/BitterGardenia/npm-package-templates/commits/${branch}?per_page=1`
     )
     const data = await res.json()
     if (data.sha === (await getSha())) {
