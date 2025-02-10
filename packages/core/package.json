@@ -32,16 +32,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BitterGardenia/npt",
+    "url": "git+https://github.com/BitterGardenia/npm-package-templates",
     "directory": "packages/core"
   },
   "keywords": [
-    "npt"
+    "npm-package-templates"
   ],
   "author": "Bitter Gardenia",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/BitterGardenia/npt/issues"
+    "url": "https://github.com/BitterGardenia/npm-package-templates/issues"
   },
-  "homepage": "https://github.com/BitterGardenia/npt/tree/main/packages/core#readme"
+  "homepage": "https://github.com/BitterGardenia/npm-package-templates/tree/main/packages/core#readme"
 }
