@@ -1,0 +1,47 @@
+{
+  "name": "@npt/core",
+  "version": "0.0.0",
+  "description": "@npt/core",
+  "main": "index.js",
+  "module": "dist/core.es.js",
+  "types": "dist/core.d.ts",
+  "files": [
+    "index.js",
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/core.d.ts",
+      "node": {
+        "production": "./dist/core.cjs.prod.js",
+        "development": "./dist/core.cjs.js",
+        "default": "./index.js"
+      },
+      "module": "./dist/core.es.js",
+      "import": "./dist/core.es.js",
+      "require": "./index.js"
+    }
+  },
+  "buildOptions": {
+    "name": "NptCore",
+    "formats": [
+      "es",
+      "cjs",
+      "umd"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BitterGardenia/npt",
+    "directory": "packages/core"
+  },
+  "keywords": [
+    "npt"
+  ],
+  "author": "Bitter Gardenia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BitterGardenia/npt/issues"
+  },
+  "homepage": "https://github.com/BitterGardenia/npt/tree/main/packages/core#readme"
+}
