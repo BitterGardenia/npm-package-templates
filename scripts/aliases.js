@@ -3,7 +3,10 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const resolveEntryForPkg = (/** @type {string} */ p) =>
-  path.resolve(fileURLToPath(import.meta.url), `../../packages/${p}/src/index.ts`)
+  path.resolve(
+    fileURLToPath(import.meta.url),
+    `../../packages/${p}/src/index.ts`,
+  )
 
 const dirs = readdirSync(new URL('../packages', import.meta.url))
 
@@ -12,7 +15,10 @@ const entries = {}
 
 for (const dir of dirs) {
   const key = `@npmpts/${dir}`
-  if (!(key in entries) && statSync(new URL(`../packages/${dir}`, import.meta.url)).isDirectory()) {
+  if (
+    !(key in entries) &&
+    statSync(new URL(`../packages/${dir}`, import.meta.url)).isDirectory()
+  ) {
     entries[key] = resolveEntryForPkg(dir)
   }
 }

@@ -11,10 +11,10 @@ export async function exec(command, args, options) {
       stdio: [
         'ignore', // stdin
         'pipe', // stdout
-        'pipe' // stderr
+        'pipe', // stderr
       ],
       ...options,
-      shell: process.platform === 'win32'
+      shell: process.platform === 'win32',
     })
 
     /**
@@ -26,19 +26,19 @@ export async function exec(command, args, options) {
      */
     const stdoutChunks = []
 
-    _process.stderr?.on('data', (chunk) => {
+    _process.stderr?.on('data', chunk => {
       stderrChunks.push(chunk)
     })
 
-    _process.stdout?.on('data', (chunk) => {
+    _process.stdout?.on('data', chunk => {
       stdoutChunks.push(chunk)
     })
 
-    _process.on('error', (error) => {
+    _process.on('error', error => {
       reject(error)
     })
 
-    _process.on('exit', (code) => {
+    _process.on('exit', code => {
       const ok = code === 0
       const stderr = Buffer.concat(stderrChunks).toString().trim()
       const stdout = Buffer.concat(stdoutChunks).toString().trim()

@@ -6,33 +6,40 @@ import MagicString from 'magic-string'
 import dts from 'rollup-plugin-dts'
 
 if (!existsSync('temp/packages')) {
-  console.warn('no temp dts files found. run `tsc -p tsconfig.build-browser.json` first.')
+  console.warn(
+    'no temp dts files found. run `tsc -p tsconfig.build-browser.json` first.',
+  )
   process.exit(1)
 }
 
 const packages = readdirSync('temp/packages')
 const targets = process.env.TARGETS ? process.env.TARGETS.split(',') : null
-const targetPackages = targets ? packages.filter((pkg) => targets.includes(pkg)) : packages
+const targetPackages = targets
+  ? packages.filter(pkg => targets.includes(pkg))
+  : packages
 
 export default targetPackages.map(
   /** @returns {import('rollup').RollupOptions} */
-  (pkg) => {
+  pkg => {
     return {
       input: `./temp/packages/${pkg}/src/index.d.ts`,
       output: {
         file: `packages/${pkg}/dist/${pkg}.d.ts`,
-        format: 'es'
+        format: 'es',
       },
       plugins: [dts(), patchTypes(pkg)],
       onwarn(warning, warn) {
         // during dts rollup, everything is externalized by default
-        if (warning.code === 'UNRESOLVED_IMPORT' && !warning.exporter?.startsWith('.')) {
+        if (
+          warning.code === 'UNRESOLVED_IMPORT' &&
+          !warning.exporter?.startsWith('.')
+        ) {
           return
         }
         warn(warning)
-      }
+      },
     }
-  }
+  },
 )
 
 /**
@@ -53,7 +60,7 @@ function patchTypes(pkg) {
       const s = new MagicString(code)
       const ast = parse(code, {
         plugins: ['typescript'],
-        sourceType: 'module'
+        sourceType: 'module',
       })
 
       /**
@@ -98,7 +105,7 @@ function patchTypes(pkg) {
           processDeclaration(
             // @ts-ignore
             node.declarations[0],
-            node
+            node,
           )
           if (node.declarations.length > 1) {
             assert(typeof node.start === 'number')
@@ -106,8 +113,8 @@ function patchTypes(pkg) {
             throw new Error(
               `unhandled declare const with more than one declarators:\n${code.slice(
                 node.start,
-                node.end
-              )}`
+                node.end,
+              )}`,
             )
           }
         } else if (
@@ -128,7 +135,10 @@ function patchTypes(pkg) {
           let removed = 0
           for (let i = 0; i < node.specifiers.length; i++) {
             const spec = node.specifiers[i]
-            if (spec.type === 'ExportSpecifier' && shouldRemoveExport.has(spec.local.name)) {
+            if (
+              spec.type === 'ExportSpecifier' &&
+              shouldRemoveExport.has(spec.local.name)
+            ) {
               assert(spec.exported.type === 'Identifier')
               const exported = spec.exported.name
               if (exported !== spec.local.name) {
@@ -148,8 +158,10 @@ function patchTypes(pkg) {
                 assert(typeof spec.start === 'number')
                 assert(typeof spec.end === 'number')
                 s.remove(
-                  prev ? (assert(typeof prev.end === 'number'), prev.end) : spec.start,
-                  spec.end
+                  prev
+                    ? (assert(typeof prev.end === 'number'), prev.end)
+                    : spec.start,
+                  spec.end,
                 )
               }
               removed++
@@ -170,10 +182,10 @@ function patchTypes(pkg) {
         code +=
           '\n' +
           readdirSync(additionalTypeDir)
-            .map((file) => readFileSync(`${additionalTypeDir}/${file}`, 'utf-8'))
+            .map(file => readFileSync(`${additionalTypeDir}/${file}`, 'utf-8'))
             .join('\n')
       }
       return code
-    }
+    },
   }
 }

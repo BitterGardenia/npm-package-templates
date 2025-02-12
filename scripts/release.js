@@ -28,27 +28,27 @@ const { values: args, positionals } = parseArgs({
   allowPositionals: true,
   options: {
     preid: {
-      type: 'string'
+      type: 'string',
     },
     dry: {
-      type: 'boolean'
+      type: 'boolean',
     },
     tag: {
-      type: 'string'
+      type: 'string',
     },
     skipBuild: {
-      type: 'boolean'
+      type: 'boolean',
     },
     skipTests: {
-      type: 'boolean'
+      type: 'boolean',
     },
     skipGit: {
-      type: 'boolean'
+      type: 'boolean',
     },
     skipPrompts: {
-      type: 'boolean'
-    }
-  }
+      type: 'boolean',
+    },
+  },
 })
 
 const preId = args.preid || semver.prerelease(currentVersion)?.[0]
@@ -59,13 +59,17 @@ const skipBuild = args.skipBuild
 const skipPrompts = args.skipPrompts
 const skipGit = args.skipGit
 
-const packages = fs.readdirSync(path.resolve(__dirname, '../packages')).filter((p) => {
-  const pkgRoot = path.resolve(__dirname, '../packages', p)
-  if (fs.statSync(pkgRoot).isDirectory()) {
-    const pkg = JSON.parse(fs.readFileSync(path.resolve(pkgRoot, 'package.json'), 'utf-8'))
-    return !pkg.private
-  }
-})
+const packages = fs
+  .readdirSync(path.resolve(__dirname, '../packages'))
+  .filter(p => {
+    const pkgRoot = path.resolve(__dirname, '../packages', p)
+    if (fs.statSync(pkgRoot).isDirectory()) {
+      const pkg = JSON.parse(
+        fs.readFileSync(path.resolve(pkgRoot, 'package.json'), 'utf-8'),
+      )
+      return !pkg.private
+    }
+  })
 
 const keepThePackageName = (/** @type {string} */ pkgName) => pkgName
 
@@ -77,7 +81,9 @@ const versionIncrements = [
   'patch',
   'minor',
   'major',
-  ...(preId ? /** @type {const} */ (['prepatch', 'preminor', 'premajor', 'prerelease']) : [])
+  ...(preId
+    ? /** @type {const} */ (['prepatch', 'preminor', 'premajor', 'prerelease'])
+    : []),
 ]
 
 const inc = (/** @type {import('semver').ReleaseType} */ i) =>
@@ -85,15 +91,16 @@ const inc = (/** @type {import('semver').ReleaseType} */ i) =>
 const run = async (
   /** @type {string} */ bin,
   /** @type {ReadonlyArray<string>} */ args,
-  /** @type {import('node:child_process').SpawnOptions} */ opts = {}
+  /** @type {import('node:child_process').SpawnOptions} */ opts = {},
 ) => exec(bin, args, { stdio: 'inherit', ...opts })
 const dryRun = async (
   /** @type {string} */ bin,
   /** @type {ReadonlyArray<string>} */ args,
-  /** @type {import('node:child_process').SpawnOptions} */ opts = {}
+  /** @type {import('node:child_process').SpawnOptions} */ opts = {},
 ) => console.log(pico.blue(`[dryrun] ${bin} ${args.join(' ')}`), opts)
 const runIfNotDry = isDryRun ? dryRun : run
-const getPkgRoot = (/** @type {string} */ pkg) => path.resolve(__dirname, '../packages/' + pkg)
+const getPkgRoot = (/** @type {string} */ pkg) =>
+  path.resolve(__dirname, '../packages/' + pkg)
 const step = (/** @type {string} */ msg) => console.log(pico.cyan(msg))
 
 async function main() {
@@ -112,7 +119,9 @@ async function main() {
       type: 'select',
       name: 'release',
       message: 'Select release type',
-      choices: versionIncrements.map((i) => `${i} (${inc(i)})`).concat(['custom'])
+      choices: versionIncrements
+        .map(i => `${i} (${inc(i)})`)
+        .concat(['custom']),
     })
 
     if (release === 'custom') {
@@ -121,7 +130,7 @@ async function main() {
         type: 'input',
         name: 'version',
         message: 'Input custom version',
-        initial: currentVersion
+        initial: currentVersion,
       })
       targetVersion = result.version
     } else {
@@ -140,7 +149,7 @@ async function main() {
     const { yes: confirmRelease } = await prompt({
       type: 'confirm',
       name: 'yes',
-      message: `Releasing v${targetVersion}. Confirm?`
+      message: `Releasing v${targetVersion}. Confirm?`,
     })
 
     if (!confirmRelease) {
@@ -158,7 +167,7 @@ async function main() {
       const { yes: promptSkipTests } = await prompt({
         type: 'confirm',
         name: 'yes',
-        message: `CI for this commit passed. Skip local tests?`
+        message: `CI for this commit passed. Skip local tests?`,
       })
 
       skipTests = promptSkipTests
@@ -198,7 +207,7 @@ async function main() {
     const { yes: changelogOk } = await prompt({
       type: 'confirm',
       name: 'yes',
-      message: `Changelog generated. Does it look good?`
+      message: `Changelog generated. Does it look good?`,
     })
 
     if (!changelogOk) {
@@ -256,8 +265,8 @@ async function main() {
   if (skippedPackages.length) {
     console.log(
       pico.yellow(
-        `The following packages are skipped and NOT published:\n- ${skippedPackages.join('\n- ')}`
-      )
+        `The following packages are skipped and NOT published:\n- ${skippedPackages.join('\n- ')}`,
+      ),
     )
   }
   console.log()
@@ -268,7 +277,7 @@ async function getCIResult() {
     const sha = await getSha()
     const res = await fetch(
       `https://api.github.com/repos/vuejs/core/actions/runs?head_sha=${sha}` +
-        `&status=success&exclude_pull_requests=true`
+        `&status=success&exclude_pull_requests=true`,
     )
     /** @type {{ workflow_runs: ({ name: string, conclusion: string })[] }} */
     const data = await res.json()
@@ -285,7 +294,7 @@ async function isInSyncWithRemote() {
   try {
     const branch = await getBranch()
     const res = await fetch(
-      `https://api.github.com/repos/BitterGardenia/npm-package-templates/commits/${branch}?per_page=1`
+      `https://api.github.com/repos/BitterGardenia/npm-package-templates/commits/${branch}?per_page=1`,
     )
     const data = await res.json()
     if (data.sha === (await getSha())) {
@@ -296,13 +305,15 @@ async function isInSyncWithRemote() {
         type: 'confirm',
         name: 'yes',
         message: pico.red(
-          `Local HEAD is not up-to-date with remote. Are you sure you want to continue?`
-        )
+          `Local HEAD is not up-to-date with remote. Are you sure you want to continue?`,
+        ),
       })
       return yes
     }
   } catch {
-    console.error(pico.red('Failed to check whether local HEAD is up-to-date with remote.'))
+    console.error(
+      pico.red('Failed to check whether local HEAD is up-to-date with remote.'),
+    )
     return false
   }
 }
@@ -323,7 +334,9 @@ function updateVersions(version, getNewPackageName = keepThePackageName) {
   // 1. update root package.json
   updatePackage(path.resolve(__dirname, '..'), version, getNewPackageName)
   // 2. update all packages
-  packages.forEach((p) => updatePackage(getPkgRoot(p), version, getNewPackageName))
+  packages.forEach(p =>
+    updatePackage(getPkgRoot(p), version, getNewPackageName),
+  )
 }
 
 /**
@@ -372,12 +385,12 @@ async function publishPackage(pkgName, version, additionalFlags) {
         ...(releaseTag ? ['--tag', releaseTag] : []),
         '--access',
         'public',
-        ...additionalFlags
+        ...additionalFlags,
       ],
       {
         cwd: getPkgRoot(pkgName),
-        stdio: 'pipe'
-      }
+        stdio: 'pipe',
+      },
     )
     console.log(pico.green(`Successfully published ${pkgName}@${version}`))
   } catch (/** @type {any} */ e) {
@@ -389,7 +402,7 @@ async function publishPackage(pkgName, version, additionalFlags) {
   }
 }
 
-main().catch((err) => {
+main().catch(err => {
   if (versionUpdated) {
     // revert to current version on failed releases
     updateVersions(currentVersion)
