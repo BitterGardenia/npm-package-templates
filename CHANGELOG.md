@@ -1,3 +1,12 @@
+## [0.0.2](https://github.com/BitterGardenia/npm-package-template/compare/v0.0.1...v0.0.2) (2025-02-12)
+
+
+### Bug Fixes
+
+* build-dts ([6161a0c](https://github.com/BitterGardenia/npm-package-template/commit/6161a0cf2c1fbd49362bea5812c28a3ac51f31fc))
+
+
+
 ## 0.0.1 (2025-02-10)
 
 
