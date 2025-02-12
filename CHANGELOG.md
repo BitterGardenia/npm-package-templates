@@ -1,3 +1,12 @@
+## [0.0.3](https://github.com/BitterGardenia/npm-package-template/compare/v0.0.2...v0.0.3) (2025-02-12)
+
+
+### Bug Fixes
+
+* change lint tool ([452de00](https://github.com/BitterGardenia/npm-package-template/commit/452de00e9546c9a78d580285d039134e501d7be8))
+
+
+
 ## [0.0.2](https://github.com/BitterGardenia/npm-package-template/compare/v0.0.1...v0.0.2) (2025-02-12)
 
 
