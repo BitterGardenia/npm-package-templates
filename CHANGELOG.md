@@ -1,3 +1,12 @@
+## [0.0.4](https://github.com/BitterGardenia/npm-package-template/compare/v0.0.3...v0.0.4) (2025-02-12)
+
+
+### Features
+
+* 添加测试配置 ([7ba25e7](https://github.com/BitterGardenia/npm-package-template/commit/7ba25e72524c08b9827daf8771dc4388654747f5))
+
+
+
 ## [0.0.3](https://github.com/BitterGardenia/npm-package-template/compare/v0.0.2...v0.0.3) (2025-02-12)
 
 
