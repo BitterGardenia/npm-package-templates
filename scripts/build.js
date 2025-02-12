@@ -103,14 +103,6 @@ function createInlineConfig(target, prod = false) {
             prod ? `${target}.${format}.prod.js` : `${target}.${format}.js`,
         },
         outDir,
-        rollupOptions: {
-          external: ['echarts'],
-          output: {
-            globals: {
-              echarts: 'echarts',
-            },
-          },
-        },
       },
     }),
   )
