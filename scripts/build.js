@@ -102,12 +102,12 @@ function createInlineConfig(target, prod = false) {
       },
       outDir,
       rollupOptions: {
-        external: ['react'],
-        output: {
-          globals: {
-            react: 'React',
-          },
-        },
+        // external: ['react'],
+        // output: {
+        //   globals: {
+        //     react: 'React',
+        //   },
+        // },
       },
     },
   }
