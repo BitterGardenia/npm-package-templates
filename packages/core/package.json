@@ -1,6 +1,6 @@
 {
   "name": "@npmpts/core",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "@npmpts/core",
   "main": "index.js",
   "module": "dist/core.es.js",
